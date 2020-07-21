@@ -1,0 +1,6 @@
+{
+  "jwtSecret": "hello from my heart",
+  "port": 5000,
+  "baseUrl": "http://localhost:5000",
+  "mongoURL": "mongodb+srv://shmih:shmihmaster@cluster0.buwid.mongodb.net/rush-quest?retryWrites=true&w=majority"
+}
