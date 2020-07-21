@@ -2,21 +2,7 @@ const UserModel = require('../models/UserModel')
 const Router = require('express')
 const router = Router()
 
-const newUser = new UserModel({
-  id: "15",
-  name: "FirstUser",
-  email: "FirstUsers email",
-  avatar: "avatars.com",
-  isDriver: true,
-  isPedestrian: true,
-  about: "I am the best",
-  birth: "10-07-2020",
-  rate: "345",
-  car: "Zhiguli",
-  isCarVisible: true,
-  carNumber: "coco450",
-  isCarNumberVisible: true
-})
+
 
 router.get(
   '/d',
@@ -28,6 +14,11 @@ router.post(
   '/dr',
   async (req, res) => {
     try {
+
+      //TODO check and save what we need from frontend
+      const newUser = new UserModel({...req})
+      newUser.save();
+
       res.status(201).json({ message: 'Пользователь создан' })
     } catch(e) {
       res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
