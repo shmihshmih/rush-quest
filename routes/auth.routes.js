@@ -12,12 +12,29 @@ router.post(
   '/',
   async (req, res) => {
     try {
+      const user = req.body;
+      const isExist = await UserModel.findOne({ email: user.email })
 
-      const addUser = new UserModel({...req.body})
+      //watching email
+      if(user && user.email && !user.pass) {
+        if(isExist) {
+           res.status(201).json({ message: "Пользователь существует",  isExist})
+        }
+      }
 
-      await addUser.save()
+      //login
+      if(user && isExist && user.password) {
+         res.status(201).json({...user})
+      }
 
-      res.status(201).json({message: 'Пользователь создан'})
+      //register
+      if(user && !isExist && user.email && user.password) {
+        const addUser = new UserModel({...user})
+        await addUser.save()
+        res.status(201).json({message: 'Пользователь создан', user, createdNow: true})
+      }
+
+      res.status(201).json({message: 'Пользователь не существует', user})
     } catch (e) {
       res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
     }
