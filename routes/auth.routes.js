@@ -9,7 +9,7 @@ router.get(
   });
 
 router.post(
-  '/create',
+  '/',
   async (req, res) => {
     try {
 

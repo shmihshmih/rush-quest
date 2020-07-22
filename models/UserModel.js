@@ -1,12 +1,12 @@
 const {Schema, model, Types} = require('mongoose')
 
 const UserSchema = new Schema({
-    id: {type: String, required: true},
-    name: {type: String, required: true},
+    id: {type: String},
+    name: {type: String},
     email: {type: String, required: true},
     avatar: {type: String},
-    isDriver: {type: Boolean, required: true},
-    isPedestrian: {type: Boolean, required: true},
+    isDriver: {type: Boolean},
+    isPedestrian: {type: Boolean},
     about: {type: String},
     birth: {type: Date},
     rate: {type: String},
