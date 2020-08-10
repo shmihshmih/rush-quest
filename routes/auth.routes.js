@@ -5,6 +5,14 @@ const router = Router()
 const bcrypt = require('bcryptjs')
 const config = require('config')
 
+const responseStatus = {
+  userCreated: 999,
+  userNotExist: 666,
+  userExist: 777,
+  passMatched: 555,
+  passNotMathed: 888
+}
+
 router.get(
   '/d',
   (req, res) => {
@@ -24,7 +32,7 @@ router.post(
           res.status(201).json({
             message: "Пользователь существует",
             email: isExist.email,
-            step: 1
+            status: responseStatus.userExist
           })
         }
           //login
@@ -36,9 +44,9 @@ router.post(
                 config.get('jwtSecret'),
                 {expiresIn: '12h'}
               )
-              res.status(201).json({message: 'sovpadaet', email: user.email, token})
+              res.status(201).json({ email: user.email, token, status: responseStatus.passMatched})
             } else {
-              res.status(201).json({message: 'ne sovpadaet', auth: false, email: user.email})
+              res.status(201).json({ auth: false, email: user.email, status: responseStatus.passNotMathed})
             }
           }
       }
@@ -50,10 +58,10 @@ router.post(
           const hashedPass = await bcrypt.hash(user.password, 12)
           const addUser = new UserModel({...user,password: hashedPass })
           await addUser.save()
-          res.status(201).json({message: 'Пользователь создан', user, createdNow: true})
+          res.status(201).json({message: 'Пользователь создан', user, status: responseStatus.userCreated})
         }
       }
-      res.status(201).json({message: 'Пользователь не существует oposlya', user})
+      res.status(201).json({message: 'Пользователь не существует', user, status: responseStatus.userNotExist})
     } catch (e) {
       res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'})
     }
